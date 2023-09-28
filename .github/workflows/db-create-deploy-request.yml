@@ -1,0 +1,36 @@
+# Creates a deploy request. This will always trigger, you can limit by exiting early using some sort of git diff check on your schema files
+name: Create a branch
+on:
+  pull_request:
+    paths: 
+      - 'src/db/**'
+    types: [opened]
+
+jobs:
+  create_deploy_request:
+    runs-on: ubuntu-latest
+    if: (github.actor != 'dependabot[bot]') && (contains(github.head_ref, 'dependabot/') == false)
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pscale
+        uses: planetscale/setup-pscale-action@v1
+
+      - name: Use pscale
+        id: pscale
+        env:
+          PLANETSCALE_SERVICE_TOKEN_ID: ${{ secrets.PLANETSCALE_SERVICE_TOKEN_ID }}
+          PLANETSCALE_SERVICE_TOKEN: ${{ secrets.PLANETSCALE_SERVICE_TOKEN }}
+        run: |
+          command="pscale deploy-request --org biblish create papertrail stage"
+          output=$(eval $command)
+          ret=$?
+          if [ $ret -ne 0 ]; then
+            exit $ret
+          fi
+          number=$(jq -n "$CMDOUT" | jq '.number')
+          echo "number=$number" >> $GITHUB_OUTPUT
+      - name: Get the deploy request number
+        run: |
+          echo "Deploy request number: ${{ steps.create_deploy_request.outputs.number }}"
