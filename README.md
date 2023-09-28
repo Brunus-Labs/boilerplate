@@ -15,11 +15,6 @@ npm install --global @commitlint/config-conventional @commitlint/cli
 ```
 
 #### Setup
-If you want to enable these in your workflow, make sure you run 
-```bash
-git config core.hooksPath ".git-hooks"
-```
-This tells git where to look for git-hooks.
 
 ## .github
 
