@@ -4,19 +4,6 @@ Here in the lab, we use a specific boilerplate in order to start our
 experiments. Feel free to use this repo to give yourself a head start on
 your next project!
 
-## .git-hooks
-
-Git hooks are a way to automate certain tasks triggered by git.
-This boilerplate uses conventional commits, so our git-hooks help us
-make sure our commit messages are following the correct standards before committing.
-
-`commit-msg` is run when you enter your commit message, and makes sure its following the right
-naming conventions.
-
-`prepare-commit-msg` is run when you open up the commit file (you may or may not do this in your
-general workflow, and that okay). All this does is add an extra newline so that if your entering
-a commit message from the CLI, you don't get a warning about spaces before body content.
-
 #### Dependencies
 
 These use the `commitlint` cli tool. Install this via your node package manager.
